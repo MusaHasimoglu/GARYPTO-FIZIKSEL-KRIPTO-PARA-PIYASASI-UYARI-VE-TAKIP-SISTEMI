@@ -38,4 +38,4 @@ Proje **C++** dili ile Arduino IDE ortamında geliştirilmiştir.
 **Musa Haşimoğlu** (Bilgisayar ve Öğretim Teknolojileri Eğitimi - STEM Projesi)
 
 ## 📄 Lisans
-Bu proje MIT Lisansı ile lisanslanmıştır.
+Bu projenin Telif Hakkı Saklıdır (All Rights Reserved)
