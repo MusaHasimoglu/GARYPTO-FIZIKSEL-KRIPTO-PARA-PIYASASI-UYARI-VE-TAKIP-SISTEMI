@@ -4,7 +4,6 @@ GARYPTO, finansal piyasalardaki dijital verileri (API) çevresel algıya hitap e
 
 Aynı zamanda Bilişimsel Düşünme (Computational Thinking) becerilerini destekleyen bir Eğitim Teknolojileri (BÖTE) ve STEM laboratuvar materyali olarak tasarlanmıştır.
 
-![GARYPTO Cihaz Görseli](images/cihaz_genel.jpeg)
 
 ## 🌟 Temel Özellikler
 
@@ -29,13 +28,13 @@ Proje **C++** dili ile Arduino IDE ortamında geliştirilmiştir.
 
 ## ⚙️ Kurulum ve Çalıştırma
 
-1. Bu depoyu bilgisayarınıza klonlayın: `git clone https://github.com/kullaniciadiniz/GARYPTO.git`
+1. Bu depoyu bilgisayarınıza klonlayın: `git clone https://github.com/MusaHasimoglu/GARYPTO-FIZIKSEL-KRIPTO-PARA-PIYASASI-UYARI-VE-TAKIP-SISTEMI.git`
 2. `src/` klasöründeki `.ino` dosyasını Arduino IDE ile açın.
 3. Kod içerisindeki Wi-Fi ayarlarını (`ssid` ve `password`) kendi ağınıza göre güncelleyin.
 4. Gerekli kütüphanelerin yüklü olduğundan emin olun ve ESP32-S3 kartınıza yükleyin.
 
 ## 👨‍💻 Geliştirici
-**Musa Haşimoğlu** (Bilgisayar ve Öğretim Teknolojileri Eğitimi - STEM Projesi)
+**Musa Haşimoğlu** (Bilgisayar ve Öğretim Teknolojileri Öğretmenliği - Fiziksel Programlama Projesi)
 
 ## 📄 Lisans
 Bu projenin Telif Hakkı Saklıdır (All Rights Reserved)
