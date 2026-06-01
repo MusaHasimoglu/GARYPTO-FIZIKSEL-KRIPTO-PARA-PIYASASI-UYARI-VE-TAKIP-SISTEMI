@@ -4,7 +4,7 @@ GARYPTO, finansal piyasalardaki dijital verileri (API) çevresel algıya hitap e
 
 Aynı zamanda Bilişimsel Düşünme (Computational Thinking) becerilerini destekleyen bir Eğitim Teknolojileri (BÖTE) ve STEM laboratuvar materyali olarak tasarlanmıştır.
 
-##Klasör İçerikleri
+# Klasör İçerikleri
 
 📁 GARYPTO/
 
