@@ -4,18 +4,6 @@ GARYPTO, finansal piyasalardaki dijital verileri (API) çevresel algıya hitap e
 
 Aynı zamanda Bilişimsel Düşünme (Computational Thinking) becerilerini destekleyen bir Eğitim Teknolojileri (BÖTE) ve STEM laboratuvar materyali olarak tasarlanmıştır.
 
-# Klasör İçerikleri
-
-📁 GARYPTO/
-
-📁 src/ (.ino uzantılı kodumuzun bulunduğu klasör)
-
-📁 3D_Models/ (Kasanın .stl uzantılı dosyalarının bulunduğu klasör)
-
-📁 images/ (Cihaz görsellerinin bulunduğu klasör)
-
-📄 README.md
-
 
 ## 🌟 Temel Özellikler
 
@@ -37,6 +25,19 @@ Proje **C++** dili ile Arduino IDE ortamında geliştirilmiştir.
 * `WiFi.h` ve `HTTPClient.h`
 * `ArduinoJson`
 * `ESP32Servo`
+
+# Klasör İçerikleri
+
+📁 GARYPTO/
+
+📁 src/ (.ino uzantılı kodumuzun bulunduğu klasör)
+
+📁 3D_Models/ (Kasanın .stl uzantılı dosyalarının bulunduğu klasör)
+
+📁 images/ (Cihaz görsellerinin bulunduğu klasör)
+
+📄 README.md
+
 
 ## ⚙️ Kurulum ve Çalıştırma
 
