@@ -102,8 +102,6 @@ const unsigned short btc_logo[1024] PROGMEM={
 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483,
 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483,
 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483,
-0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483,
-0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483,
 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483, 0xF483
 };
 
@@ -242,12 +240,11 @@ const unsigned short bnb_logo[1024] PROGMEM={
 
 // =========================================================================
 
-
 void setup() {
   Serial.begin(115200);
   pinMode(BUZZER_PIN, OUTPUT);
   tft.init();
-  tft.setRotation(1); // Ekran Orijinal Yatay Yönünde
+  tft.setRotation(1); 
   tft.setTouch(calData); 
 
   // Servo Kurulumu 
@@ -290,14 +287,13 @@ void loop() {
       fiyatCekVeYazdir();
       sonGuncelleme = millis();
     }
+    // GÜNCELLEME 1: Alarm tetiklendiğinde artık servo motorlar çağrılmıyor
     if (alarmKurulduMu && !alarmTetiklendiMi && anlikFiyat > 0) {
       if (alarmYonu == 1 && anlikFiyat >= hedefFiyat) { 
         alarmTetikle();
-        bayrakKaldir(1); 
       } 
       if (alarmYonu == -1 && anlikFiyat <= hedefFiyat) { 
         alarmTetikle();
-        bayrakKaldir(-1); 
       } 
     }
   }
@@ -335,6 +331,7 @@ void fiyatCekVeYazdir() {
         oncekiFiyat = yeniFiyat; 
       }
 
+      // Merkez noktası (oncekiFiyat) ile anlık gelen fiyat arasındaki 5 saniyelik fark
       float fark = yeniFiyat - oncekiFiyat;
 
       // === 1. ADIM: ÖNCE YENİ FİYATI EKRANA YAZDIR ===
@@ -344,15 +341,18 @@ void fiyatCekVeYazdir() {
       tft.drawString("$" + String(anlikFiyat, 3), tft.width()/2, 120); 
 
       // === 2. ADIM: SONRA BAYRAKLARI VE ALARMI TETİKLE ===
+      // Motorlar sadece son 5 saniye içindeki fark limiti aşarsa kalkar
       if (fabs(fark) >= degisimSiniri) {
-        oncekiFiyat = yeniFiyat; 
-
         if (fark > 0) {
           bayrakKaldir(1);  
         } else {
           bayrakKaldir(-1); 
         }
       }
+
+      // === 3. ADIM: MERKEZ NOKTASINI HER 5 SANİYEDE BİR GÜNCELLE ===
+      // Alarm çalsa da çalmasa da, bir sonraki 5 saniye için merkez noktamız artık bu yeni fiyattır.
+      oncekiFiyat = yeniFiyat; 
 
     } else {
       tft.fillRect(10, 90, 460, 65, TFT_BLACK); 
@@ -395,6 +395,12 @@ void alarmTetikle() {
   tft.fillRect(0, 0, tft.width(), 80, TFT_BLUE);
   tft.setTextColor(TFT_WHITE); tft.setTextSize(3); tft.setTextDatum(MC_DATUM);
   tft.drawString("HEDEF VURULDU!", tft.width()/2, 40);
+  
+  // GÜNCELLEME 1: Sadece buzzer ile ikaz veriyor
+  for(int i=0; i<6; i++) {
+    tone(BUZZER_PIN, 2000, 150); delay(150);
+    tone(BUZZER_PIN, 2500, 150); delay(150);
+  }
 }
 
 // ================= ARAYÜZ FONKSİYONLARI =================
@@ -475,7 +481,15 @@ void numpadArayuzunuCiz() {
   tft.fillRoundRect(190, 140, btnW, btnH, 5, TFT_DARKGREY); tft.drawString("6", 225, 165);
   tft.fillRoundRect(190, 200, btnW, btnH, 5, TFT_DARKGREY); tft.drawString("9", 225, 225);
   tft.fillRoundRect(190, 260, btnW, btnH, 5, TFT_RED);      tft.drawString("C", 225, 285);
-  tft.fillRoundRect(280, 80, 170, 230, 8, TFT_GREEN); tft.setTextColor(TFT_BLACK); tft.setTextSize(4); tft.drawString("ONAY", 365, 195);
+  
+  // GÜNCELLEME 2: GERİ ve ONAY butonları ayrıldı
+  tft.fillRoundRect(280, 80, 170, 70, 8, TFT_ORANGE); 
+  tft.setTextColor(TFT_WHITE); tft.setTextSize(3); 
+  tft.drawString("GERI", 365, 115);
+
+  tft.fillRoundRect(280, 160, 170, 150, 8, TFT_GREEN); 
+  tft.setTextColor(TFT_BLACK); tft.setTextSize(4); 
+  tft.drawString("ONAY", 365, 235);
 }
 
 void numpadEkraniGuncelle() {
@@ -507,20 +521,29 @@ void numpadDokunmatikKontrol(uint16_t x, uint16_t y) {
       basildi = true; 
     }
   }
-  else if (x > 280 && x < 450 && y > 80 && y < 310) {
-    kisaBip();
-    if (girilenRakamStr.length() > 0) {
-      if (numpadModu == 1) { 
-        hedefFiyat = girilenRakamStr.toFloat(); hedefFiyatStr = girilenRakamStr; alarmKurulduMu = true; alarmTetiklendiMi = false;
-        if (hedefFiyat > anlikFiyat) { alarmYonu = 1; } else { alarmYonu = -1; } 
-      } 
-      else if (numpadModu == 2) { 
-        degisimSiniri = girilenRakamStr.toFloat(); 
-      }
-      onaySesiCal(); canliEkranaGec(); 
+  // GÜNCELLEME 2'NİN DEVAMI: GERİ VE ONAY KOORDİNAT KONTROLLERİ
+  else if (x > 280 && x < 450) {
+    if (y > 80 && y < 150) {
+      kisaBip();
+      canliEkranaGec(); // GERİ butonuna basıldı, değer kaydetmeden dön
+      return;
     }
-    return;
+    else if (y > 160 && y < 310) {
+      kisaBip();
+      if (girilenRakamStr.length() > 0) {
+        if (numpadModu == 1) { 
+          hedefFiyat = girilenRakamStr.toFloat(); hedefFiyatStr = girilenRakamStr; alarmKurulduMu = true; alarmTetiklendiMi = false;
+          if (hedefFiyat > anlikFiyat) { alarmYonu = 1; } else { alarmYonu = -1; } 
+        } 
+        else if (numpadModu == 2) { 
+          degisimSiniri = girilenRakamStr.toFloat(); 
+        }
+        onaySesiCal(); canliEkranaGec(); 
+      }
+      return;
+    }
   }
+  
   if (basildi) {
     kisaBip();
     if (girilenRakamStr.length() > 10) girilenRakamStr = girilenRakamStr.substring(0, 10);
